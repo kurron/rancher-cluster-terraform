@@ -1,5 +1,5 @@
 #Overview
-This project uses [Terraform](http://terraform.io/) to construct EC2 instances suitable to run a [Consul](https://www.consul.io/) cluster.
+This project uses [Terraform](http://terraform.io/) to construct EC2 instances suitable to run a [Rancher](http://rancher.com/) cluster.
 
 #Prerequisites
 * a working [Terraform](http://terraform.io) installation

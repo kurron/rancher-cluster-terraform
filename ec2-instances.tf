@@ -6,12 +6,12 @@ variable "aws_region" {
 
 variable "realm" {
     description = "The logical group that all of the infrastructure belongs to. Similar idea to an AWS stack."
-    default = "Asgard Lite Testing" 
+    default = "Rancher Testing" 
 }
 
 variable "purpose" {
     description = "A tag indicating why all the infrastructure exists, eg. load-testing."
-    default = "Consul Cluster" 
+    default = "Rancher Cluster" 
 }
 
 variable "managed_by" {
@@ -31,7 +31,12 @@ variable "server_user_data" {
 
 variable "instance_type" {
     description = "The type of EC2 instance to spin up."
-    default = "t2.micro" 
+    default = "t2.medium" 
+}
+
+variable "admin_instance_type" {
+    description = "The type of EC2 instance to spin up."
+    default = "t2.small" 
 }
 
 variable "docker_security_group" {
@@ -44,7 +49,7 @@ variable "aws_amis" {
     default = {
         us-east-1      = ""
         us-west-1      = ""
-        us-west-2      = "ami-dab144ba"
+        us-west-2      = "ami-e45fbf84"
         eu-west-1      = ""
         eu-central-1   = ""
         sa-east-1      = ""
@@ -58,24 +63,24 @@ variable "aws_amis" {
 
 module "alpha" {
     source = "github.com/kurron/terraform-modules/aws/instance/well-known"
-    name = "Alpha Consul Server"
+    name = "Alpha Rancher Server"
     realm = "${var.realm}"
     purpose = "${var.purpose}"
     managed_by = "${var.managed_by}"
 
     image_id = "${lookup(var.aws_amis, var.aws_region)}"
-    instance_type = "${var.instance_type}"
+    instance_type = "${var.admin_instance_type}"
     key_name = "${var.key_name}"
     security_groups = "${var.docker_security_group}"
     ebs_optimized = false
     user_data = "${var.server_user_data}"
-    private_ip = "10.0.2.200"
+    private_ip = "10.0.2.100"
     subnet_id = "subnet-0ebf9e6b"
 }
 
 module "bravo" {
     source = "github.com/kurron/terraform-modules/aws/instance/well-known"
-    name = "Bravo Consul Server"
+    name = "Bravo Rancher Server"
     realm = "${var.realm}"
     purpose = "${var.purpose}"
     managed_by = "${var.managed_by}"
@@ -86,13 +91,13 @@ module "bravo" {
     security_groups = "${var.docker_security_group}"
     ebs_optimized = false
     user_data = "${var.server_user_data}"
-    private_ip = "10.0.0.200"
+    private_ip = "10.0.0.100"
     subnet_id = "subnet-7181c606"
 }
 
-module "Charlie" {
+module "charlie" {
     source = "github.com/kurron/terraform-modules/aws/instance/well-known"
-    name = "Charlie Consul Server"
+    name = "Charlie Rancher Server"
     realm = "${var.realm}"
     purpose = "${var.purpose}"
     managed_by = "${var.managed_by}"
@@ -103,7 +108,7 @@ module "Charlie" {
     security_groups = "${var.docker_security_group}"
     ebs_optimized = false
     user_data = "${var.server_user_data}"
-    private_ip = "10.0.4.200"
+    private_ip = "10.0.4.100"
     subnet_id = "subnet-0c20be55"
 }
 
